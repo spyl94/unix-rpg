@@ -21,7 +21,6 @@ function initObjects {
 
 #Crée la carte du jeu
 function initMap {
-	echo "génération de la carte..."
 	rm -Rf $DEF_PATH/entree
 	mkdir -p $DEF_PATH/entree/{hall/{chambre/{armoire,bibliotheque},cuisine/coin,salon/{cheminee,etage}},jardin/{cabane,allee}}
 	if [ $? != 0 ]; then echo "Impossible de créer la carte."; exit; fi

@@ -39,8 +39,6 @@ function initMap {
 	ln -s $DEF_PATH/entree/hall/salon/cheminee/ $DEF_PATH/entree/jardin/cabane
 }
 
-
-
 #Initialise la partie
 function start {
 	initMap
