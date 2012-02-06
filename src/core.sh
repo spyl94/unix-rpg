@@ -12,7 +12,8 @@ function char {
 
 #crée une nouvelle partie
 function newchar {
-	count=0
+	cd $DEF_PATH; clear; #count=0;
+
 	read -p "Quel est ton nom jeune aventurier?" nom ; clear
 	read -p "Bienvenue, $nom, raconte moi ton histoire..." description ; clear
 	pvmax=$((10 + ($RANDOM % 10)))

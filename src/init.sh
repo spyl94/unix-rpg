@@ -1,8 +1,10 @@
 #!/bin/bash
 
+#Place les objets dans les salles
 function initObjects {
-	if [ $(($RANDOM%2)) -eq 0 ]; then 
-		echo "blabla" >> $1/armes.txt; 
+	touch $1/armes.txt $1/enigmes.txt $1/mobs.txt $1/potions.txt $1/enigmes.txt #inutile mais demandé par l'énoncé.
+	if [ $(($RANDOM%2)) -eq 0 ]; then
+		echo $(sed -n $((1 + ($RANDOM % 11)))"p" $DEF_PATH"/lib/armes.txt") >> $1/armes.txt;
 		((nombreArmes++))
 	fi
 	if [ $(($RANDOM%2)) -eq 0 ]; then
@@ -13,8 +15,8 @@ function initObjects {
 		echo $(sed -n $((1 + ($RANDOM % 4)))"p" $DEF_PATH"/lib/potions.txt") >> $1/potions.txt;
 		((nombrePotions++))
 	fi
-	if [ $(($RANDOM%2)) -eq 0 ]; then 
-		echo "blabla" >> $1/enigmes.txt; 
+	if [ $(($RANDOM%2)) -eq 0 ]; then
+		echo $(sed -n $((1 + ($RANDOM % 8)))"p" $DEF_PATH"/lib/enigmes.txt") >> $1/enigmes.txt;
 		((nombreEnigmes++))
 	fi
 }
@@ -25,6 +27,8 @@ function initPlacement {
 	if [[ "$nombreMobs" -gt 8 && "$nombreEnigmes" -gt 8 ]]; then echo "Génération de la carte terminée."; else initPlacement; fi
 	)
 }
+
+#Initialise la carte
 function initMap {
 	rm -Rf $DEF_PATH/entree
 	mkdir -p $DEF_PATH/entree/{hall/{chambre/{armoire,bibliotheque},cuisine/coin,salon/{cheminee,etage}},jardin/{cabane,allee}}
