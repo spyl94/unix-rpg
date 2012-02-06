@@ -19,7 +19,9 @@ function newchar {
 	pv=$pvmax
 	echo -e "Je vois que tu as $pvmax PV.\n\nPour commencer ton aventure, choisi une arme dans la liste suivante:"
 	echo -e "\E[37;44m"
-	cut -d: -f1,2 ./lib/armes.txt | head -n 3
+	echo Arme 1:; cut -d: -f1,2 ./lib/armes.txt | sed -n '1p'
+	echo Arme 2:; cut -d: -f1,2 ./lib/armes.txt | sed -n '2p'
+	echo Arme 3:; cut -d: -f1,2 ./lib/armes.txt | sed -n '3p'
 	echo -e "\033[0m"
 	#a securiser
 	read -p 'Selectionnez le numéro de votre arme:

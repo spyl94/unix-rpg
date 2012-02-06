@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function isDead { if [ $pv -le 0 ]; then return 0; else return 1; fi }
+function isDead { if [ $pv -le 0 ]; then return true; else return false; fi }
 
 function game {
 	nb=0 
@@ -35,8 +35,8 @@ function game {
 	echo "Actions:"
 	nb=0
 	
-	if [ ! $mobsCount -eq 0 ]; then 
-		for i in "${mobs[@]}"; do echo $nb") Attaquer : $i"; let "nb+=1"; done
+	if [ ! $mobsCount -eq 0 ]; then
+		for i in "${mobs[@]}"; do echo $nb") Attaquer : $i" | cut -d: -f1,2; let "nb+=1"; done
 	else
 		for i in "${pieces[@]}"; do echo $nb") Aller : $i"; let "nb+=1"; done
 	fi

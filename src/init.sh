@@ -6,11 +6,11 @@ function initObjects {
 		((nombreArmes++))
 	fi
 	if [ $(($RANDOM%2)) -eq 0 ]; then
- 		echo "blabla" >> $1/mobs.txt;
+ 		echo $(sed -n $((1 + ($RANDOM % 8)))"p" $DEF_PATH"/lib/mobs.txt") >> $1/mobs.txt;
 		((nombreMobs++))
 	fi
-	if [ $(($RANDOM%2)) -eq 0 ]; then 
-		echo "blabla" >> $1/potions.txt;
+	if [ $(($RANDOM%2)) -eq 0 ]; then
+		echo $(sed -n $((1 + ($RANDOM % 4)))"p" $DEF_PATH"/lib/potions.txt") >> $1/potions.txt;
 		((nombrePotions++))
 	fi
 	if [ $(($RANDOM%2)) -eq 0 ]; then 
@@ -22,7 +22,7 @@ function initObjects {
 #Crée la carte du jeu
 function initPlacement {
 	find "$DEF_PATH/entree" -type d | (while read A ; do initObjects $A; done
-	if [[ "$nombreMobs" -gt 8 && "$nombreEnigmes" -gt 8 ]]; then echo "c cool"; else initPlacement; fi
+	if [[ "$nombreMobs" -gt 8 && "$nombreEnigmes" -gt 8 ]]; then echo "Génération de la carte terminée."; else initPlacement; fi
 	)
 }
 function initMap {
@@ -30,7 +30,11 @@ function initMap {
 	mkdir -p $DEF_PATH/entree/{hall/{chambre/{armoire,bibliotheque},cuisine/coin,salon/{cheminee,etage}},jardin/{cabane,allee}}
 	if [ $? != 0 ]; then echo "Impossible de créer la carte."; exit; fi
 	#sortie:
-	mkdir $DEF_PATH/entree/hall/salon/cheminee/sortie
+	if [ $(($RANDOM%2)) -eq 0 ]; then
+		mkdir $DEF_PATH/entree/hall/salon/cheminee/sortie
+	else
+		mkdir $DEF_PATH/entree/hall/salon/cheminee/sortie
+	fi
 
 
 	#passages secrets:
@@ -41,6 +45,7 @@ function initMap {
 	nombreArmes=0;
 	nombrePotions=0;
 	initPlacement
+	#exit;
 }
 #Initialise la partie
 function start {

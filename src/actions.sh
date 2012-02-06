@@ -8,7 +8,24 @@ function move {
 	fi
 }
 function fight {
-	echo "J'attaque le mob " $1;
+	clear
+	nomMob=$(echo ${mobs[$1]} | cut -d: -f1)
+	desMob=$(echo ${mobs[$1]} | cut -d: -f2)
+	declare -i pvMob=$(echo ${mobs[$1]} | cut -d: -f3)
+	declare -i degMaxMob=$(echo ${mobs[$1]} | cut -d: -f4)
+	echo -e "Vous entrez en phase de combat avec $nomMob\n$desMob";
+	while [ "$pvMob" -gt 0 ]; do
+		echo -e "Vos Pv: $pv | $nomMob Pv: $pvMob"
+		if [ $(($RANDOM%2)) -eq 0 ]; then ((pvMob-=$degArme))
+		else echo "Vous ratez votre attaque..."; fi
+		sleep 1;
+		if [ $(($RANDOM%2)) -eq 0 ]; then ((pv-=$degMaxMob))
+		else echo "$nomMob rate son attaque!"; fi
+		sleep 1;
+		if [ $pv -le 0 ]; then clear; echo "Vous êtes mort... $nomMob vous a vaincu."; menu; fi
+	done
+	sed $(($1+1))"d" `pwd`/mobs.txt -i
+	clear; echo "Vous avez vaincu $nomMob !"
 }
 
 function choice { if [ $mobsCount -eq 0 ]; then move $1; else fight $1; fi }
