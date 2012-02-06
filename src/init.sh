@@ -36,9 +36,7 @@ function initMap {
 	#sortie:
 	if [ $(($RANDOM%2)) -eq 0 ]; then
 		mkdir $DEF_PATH/entree/hall/salon/cheminee/sortie
-	else
-		mkdir $DEF_PATH/entree/hall/salon/cheminee/sortie
-	fi
+	else mkdir $DEF_PATH/entree/hall/salon/cheminee/sortie; fi
 
 
 	#passages secrets:
@@ -49,8 +47,8 @@ function initMap {
 	nombreArmes=0;
 	nombrePotions=0;
 	initPlacement
-	#exit;
 }
+
 #Initialise la partie
 function start {
 	initMap

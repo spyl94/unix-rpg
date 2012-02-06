@@ -4,15 +4,15 @@ source src/init.sh
 source src/actions.sh
 source src/game.sh
 
-#ecrit dans char.txt
+#Ecrit dans char.txt
 function char {
 	rm -rf "$DEF_PATH/char.txt"
 	for i; do echo $i >> "$DEF_PATH/char.txt"; done
 }
 
-#crée une nouvelle partie
+#Crée une nouvelle partie
 function newchar {
-	cd $DEF_PATH; clear; #count=0;
+	cd $DEF_PATH; clear;
 
 	read -p "Quel est ton nom jeune aventurier?" nom ; clear
 	read -p "Bienvenue, $nom, raconte moi ton histoire..." description ; clear
@@ -27,9 +27,13 @@ function newchar {
 	#a securiser
 	read -p 'Selectionnez le numéro de votre arme:
 	' nbarme
-	char "$nom" "$description" "$pvmax" "$pv"
-	sed -n $nbarme'p' ./lib/armes.txt >> char.txt
-	start	
+        case "$nbarme" in
+                q|Q) exit;;
+		1|2|3)	char "$nom" "$description" "$pvmax" "$pv"
+			sed -n $nbarme'p' ./lib/armes.txt >> char.txt
+			start;;
+                *) newchar;;
+        esac
 }
 
 #Affiche la feuille de personnage

@@ -30,25 +30,28 @@ function game {
 	if [ -f "${perso[5]}"/enigmes.txt ]; then 
 		while read ligne ; do enigmes[$enigmesCount]=$ligne; let "enigmesCount+=1";
 		done < "${perso[5]}"/enigmes.txt; fi
+	armesCount=0	#On récupère les armes disponibles
+	if [ -f "${perso[5]}"/armes.txt ]; then 
+		while read ligne ; do armes[$armesCount]=$ligne; let "armesCount+=1";
+		done < "${perso[5]}"/armes.txt; fi
 	nb=0	#On récupère les pièces disponibles
 	for i in $(ls -d */ 2>/dev/null); do pieces[$nb]=$i; let "nb+=1"; done
 
-	echo -e "|Monstres: $mobsCount\n|Potions: $potionsCount\n|Enigmes: $enigmesCount\n------------------";
-	
+	echo -e "|Armes: $armesCount\n|Monstres: $mobsCount\n|Potions: $potionsCount\n|Enigmes: $enigmesCount\n------------------";
 	echo "Actions:"; nb=0;
-	
 	if [ ! $mobsCount -eq 0 ]; then for i in "${mobs[@]}"; do echo $nb") Attaquer : $i" | cut -d: -f1,2; let "nb+=1"; done
 	elif [ ! $enigmesCount -eq 0 ]; then for i in "${enigmes[@]}"; do echo $nb") Résoudre l'énigme : $i" | cut -d: -f1,2; let "nb+=1"; done
 	else for i in "${pieces[@]}"; do echo $nb") Aller : $i"; let "nb+=1"; done; fi
-	
+	if [ ! $armesCount -eq 0 ]; then echo "A) Changer d'Arme"; fi
 	echo "C) Chercher un Passage Secret"
 	echo "M) Menu Principal"
 	[ ! $potionsCount -eq 0 ] && echo "P) Utiliser Potion";
-	if [ "$lieu" != "entree" ]; then echo "R) Reculer d'une pièce"; fi
 	echo "Q) Quitter"
+	if [ "$lieu" != "entree" ]; then echo "R) Reculer d'une pièce"; fi
 
 	read choice 
         case "$choice" in
+		a|A) armes;;
                 q|Q) exit;;
 		c|C) secret;;
                 m|M) menu;;
