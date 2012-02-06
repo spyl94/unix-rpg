@@ -8,7 +8,7 @@ function initObjects {
 		((nombreArmes++))
 	fi
 	if [ $(($RANDOM%2)) -eq 0 ]; then
- 		echo $(sed -n $((1 + ($RANDOM % 8)))"p" $DEF_PATH"/lib/mobs.txt") >> $1/mobs.txt;
+ 		echo $(sed -n $((1 + ($RANDOM % 10)))"p" $DEF_PATH"/lib/mobs.txt") >> $1/mobs.txt;
 		((nombreMobs++))
 	fi
 	if [ $(($RANDOM%2)) -eq 0 ]; then
