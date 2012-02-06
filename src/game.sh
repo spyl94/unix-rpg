@@ -9,7 +9,8 @@ function game {
 	#On récupère les infos du fichier char.txt
 	while read ligne ; do perso[$nb]=$ligne; let "nb+=1";
 	done < "$DEF_PATH"/char.txt
-	lieu=$(basename "${perso[5]}"); 
+	lieu=$(basename "${perso[5]}");
+	if [ $lieu = sortie ]; then win; fi
 	declare -i pvMax="${perso[2]}"
 	declare -i pv="${perso[3]}"
 	arme="${perso[4]}"
@@ -62,5 +63,6 @@ function game {
         esac
 	#On enregistre la configuration du joueur:
 	char "${perso[0]}" "${perso[1]}" "${perso[2]}" "$pv" "$arme" `pwd`
-	if [ !isDead ]; then game; fi; #On relance
+	cd $DEF_PATH/entree/hall/salon/cheminee/
+	game #On relance
 }

@@ -43,7 +43,7 @@ function resolve {
 	case "$choice" in
                 q|Q) exit;;
 		a|A) game;;
-		1|2) let "choice+=2";	if [ $(echo "${enigmes[$1]}" | cut -d: -f$(($choice))) == $(echo "${enigmes[$1]}" | cut -d: -f5) ]; then
+		1|2) let "choice+=2";	if [ $(echo "${enigmes[$1]}" | cut -d: -f$(($choice))) = $(echo "${enigmes[$1]}" | cut -d: -f5) ]; then
 				clear; echo "Félicitations, vous avez réussi l'énigme!"; sed $(($1+1))"d" `pwd`/enigmes.txt -i;
 			else	clear; echo "Vous avez échoué et mourrez dans d'atroces souffrances..."; menu; fi;;
                 *) echo "Choix non valide..."

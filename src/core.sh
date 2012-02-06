@@ -10,6 +10,11 @@ function char {
 	for i; do echo $i >> "$DEF_PATH/char.txt"; done
 }
 
+function win {
+	echo -e "Vous avez réussi à sortir du labyrinthe vivant...\nOserez-vous retenter l'expérience?"
+	menu
+}
+
 #Crée une nouvelle partie
 function newchar {
 	cd $DEF_PATH; clear;
