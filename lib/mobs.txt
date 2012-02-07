@@ -1,10 +1,13 @@
-Alexian:Créature minuscule et inoffensive.:3:0
+Alexian:Creature minuscule et inoffensive.:5:1
 Troll:Le troll ne craint pas la mort,vous par contre...:25:4
-Spyl:Petite créature rabougrie.:5:1
-Gobelin:Humanoïde verdâtre.:5:2
-Kobold:Les kobolds sont de petits humanoïdes aussi lâches que sadiques.:5:1
+Spyl:Petite creature rabougrie.:5:1
+Gobelin:Humanoide verdâtre.:5:2
+Kobold:Les kobolds sont de petits humanoides aussi laches que sadiques.:5:1
 Cockatrix:Poulet-zombie.:7:2
-Homoursporc:Créature mi-homme, mi-ours, mi-porc.:7:2
-Succube:Une beauté mortelle qui vous fera voir toutes les couleurs du 7éme ciel.:15:5
-Centaure:Créature mi-homme mi-cheval.:10:3
-Dragon d'or:Dragon paré d'une robe dorée.:20:5
+Homoursporc:Creature mi-homme, mi-ours, mi-porc.:7:2
+Succube:Une beaute mortelle qui vous fera voir toutes les couleurs du 7éme ciel.:15:5
+Centaure:Creature mi-homme mi-cheval.:10:3
+Dragon d'or:Dragon pare d'une robe dorée.:20:5
+Mimique:Joli coffre, OH MON DIEU:15:4
+Spamaviakarnotrulamark:FUYEZ!:100:2
+Phoenix:Creature legendaire:1:15

@@ -1,5 +1,3 @@
-#!/bin/bash
-
 function isDead { if [ $pv -le 0 ]; then return true; else return false; fi }
 
 function game {
@@ -36,9 +34,10 @@ function game {
 		while read ligne ; do armes[$armesCount]=$ligne; let "armesCount+=1";
 		done < "${perso[5]}"/armes.txt; fi
 	nb=0	#On récupère les pièces disponibles
-	for i in $(ls -d */ 2>/dev/null); do pieces[$nb]=$i; let "nb+=1"; done
+	for i in $(ls -F | grep / 2>/dev/null); do pieces[$nb]=$i; let "nb+=1"; done
 
 	echo -e "|Armes: $armesCount\n|Monstres: $mobsCount\n|Potions: $potionsCount\n|Enigmes: $enigmesCount\n------------------";
+	cat description.txt
 	echo "Actions:"; nb=0;
 	if [ ! $mobsCount -eq 0 ]; then for i in "${mobs[@]}"; do echo $nb") Attaquer : $i" | cut -d: -f1,2; let "nb+=1"; done
 	elif [ ! $enigmesCount -eq 0 ]; then for i in "${enigmes[@]}"; do echo $nb") Résoudre l'énigme : $i" | cut -d: -f1,2; let "nb+=1"; done
@@ -63,6 +62,5 @@ function game {
         esac
 	#On enregistre la configuration du joueur:
 	char "${perso[0]}" "${perso[1]}" "${perso[2]}" "$pv" "$arme" `pwd`
-	cd $DEF_PATH/entree/hall/salon/cheminee/
 	game #On relance
 }

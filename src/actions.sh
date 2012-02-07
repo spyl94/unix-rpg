@@ -1,5 +1,3 @@
-#!/bin/bash
-
 #Déplace le personnage dans la pièce reçue en paramètre
 function move {
 	clear
@@ -25,7 +23,7 @@ function fight {
 			else echo -e "	$nomMob rate son attaque!"; fi
 			sleep 1;
 		fi
-		if [ $pv -le 0 ]; then clear; echo "Vous êtes mort... $nomMob vous a vaincu."; menu; fi
+		if [ $pv -le 0 ]; then clear; echo "Vous êtes mort... $nomMob vous a vaincu."; rm -rf $DEF_PATH/char.txt; menu; fi
 	done
 	sed $(($1+1))"d" `pwd`/mobs.txt -i
 	clear; echo "Vous avez vaincu $nomMob !"
@@ -45,7 +43,10 @@ function resolve {
 		a|A) game;;
 		1|2) let "choice+=2";	if [ $(echo "${enigmes[$1]}" | cut -d: -f$(($choice))) = $(echo "${enigmes[$1]}" | cut -d: -f5) ]; then
 				clear; echo "Félicitations, vous avez réussi l'énigme!"; sed $(($1+1))"d" `pwd`/enigmes.txt -i;
-			else	clear; echo "Vous avez échoué et mourrez dans d'atroces souffrances..."; menu; fi;;
+			else	
+				clear; echo "Vous avez ratez l'énigme et perdez 3PV."; ((pv-=3));
+				if [ $pv -le 0 ]; then clear; echo "Vous êtes mort... $nomMob vous a vaincu."; rm -rf $DEF_PATH/char.txt; menu; fi
+			fi;;
                 *) echo "Choix non valide..."
         esac	
 }
@@ -55,7 +56,7 @@ function choice { if [ ! $mobsCount -eq 0 ]; then fight $1; elif [ ! $enigmesCou
 #Utilise le passage secret si il est disponible
 function secret {
 	if [ $(ls -F | grep @ -c) -eq 0 ]; then clear; echo "Il n'y a pas de passage secret ici.";
-	else clear; echo "Vous avez trouvé un passage secret, il semble mèner vers " $(ls -F | grep @ | cut -d@ -f1)".";
+	else clear; echo "Vous avez trouvé un passage secret, il semble mener vers " $(ls -F | grep @ | cut -d@ -f1)".";
 	echo -e "Osez vous l'emprunter?\nO)Oui\nN)Non"
 	read choice
 	case "$choice" in
@@ -133,7 +134,7 @@ function armes {
 		        q|Q) exit;;
 			a|A) game;;
 			0|1|2|3|4|5) switch $choice;;
-		        *) echo "Choix non valide..."
+		        *) clear; echo "Choix non valide..."
 		esac
 	else	echo "Vous ne trouvez aucune arme dans la pièce..."; fi
 }

@@ -18,10 +18,13 @@ while  read -p "Menu:
         case "$choice" in
                 q|Q) exit;;
                 1) newchar;;
+		2) load;;
+		3) save;;
 		4) perso;;
                 *) echo "Choix non valide..."
         esac
 done
 }
+
 menu
 
