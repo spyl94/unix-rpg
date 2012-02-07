@@ -2,22 +2,20 @@
 function initObjects {
 	touch $1/armes.txt $1/enigmes.txt $1/mobs.txt $1/potions.txt $1/enigmes.txt $1/description.txt #inutile mais demandé par l'énoncé.
 	if [ $(($RANDOM%2)) -eq 0 ]; then
-		echo $(sed -n $((1 + ($RANDOM % 11)))"p" $DEF_PATH"/lib/armes.txt") >> $1/armes.txt;
-		((nombreArmes++))
+		echo $(sed -n $((1 + ($RANDOM % $(cat $DEF_PATH"/lib/armes.txt" | wc -l))))"p" $DEF_PATH"/lib/armes.txt") >> $1/armes.txt;
 	fi
 	if [ $(($RANDOM%2)) -eq 0 ]; then
- 		echo $(sed -n $((1 + ($RANDOM % 13)))"p" $DEF_PATH"/lib/mobs.txt") >> $1/mobs.txt;
+ 		echo $(sed -n $((1 + ($RANDOM % $(cat $DEF_PATH"/lib/mobs.txt" | wc -l))))"p" $DEF_PATH"/lib/mobs.txt") >> $1/mobs.txt;
 		((nombreMobs++))
 	fi
 	if [ $(($RANDOM%2)) -eq 0 ]; then
-		echo $(sed -n $((1 + ($RANDOM % 4)))"p" $DEF_PATH"/lib/potions.txt") >> $1/potions.txt;
-		((nombrePotions++))
+		echo $(sed -n $((1 + ($RANDOM % $(cat $DEF_PATH"/lib/potions.txt" | wc -l))))"p" $DEF_PATH"/lib/potions.txt") >> $1/potions.txt;
 	fi
 	if [ $(($RANDOM%2)) -eq 0 ]; then
-		echo $(sed -n $((1 + ($RANDOM % 8)))"p" $DEF_PATH"/lib/enigmes.txt") >> $1/enigmes.txt;
+		echo $(sed -n $((1 + ($RANDOM % $(cat $DEF_PATH"/lib/enigmes.txt" | wc -l))))"p" $DEF_PATH"/lib/enigmes.txt") >> $1/enigmes.txt;
 		((nombreEnigmes++))
 	fi
-	echo $(sed -n $((1 + ($RANDOM % 2)))"p" $DEF_PATH"/lib/description.txt") > $1/description.txt;
+	echo $(sed -n $((1 + ($RANDOM % $(cat $DEF_PATH"/lib/description.txt" | wc -l))))"p" $DEF_PATH"/lib/description.txt") > $1/description.txt;
 }
 
 #Crée la carte du jeu
@@ -39,14 +37,21 @@ function initMap {
 	let "cpt+=1"; if [ $rand -eq $cpt ]; then mkdir $A/sortie; fi
 	done
 
-
-	#passages secrets:
-	ln -s $DEF_PATH/entree/hall/salon/cheminee/ $DEF_PATH/entree/jardin/cabane
+	#passage secret:
+	rand=$((3 + ($RANDOM % 15 )));
+	rand2=$((3 + ($RANDOM % 15 )));
+	cpt=0
+	cpt2=0
+	find "$DEF_PATH/entree" -type d | while read A ; do 
+	let "cpt+=1"; if [ $rand -eq $cpt ]; then 
+		find "$DEF_PATH/entree" -type d | while read B ; do 
+		let "cpt2+=1"; if [ $rand2 -eq $cpt2 ]; then 
+			ln -s $B $A; #echo "Passage entre $B et $A";
+		fi; done
+	fi; done
 
 	nombreMobs=0;
 	nombreEnigmes=0;
-	nombreArmes=0;
-	nombrePotions=0;
 	initPlacement
 }
 

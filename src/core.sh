@@ -13,11 +13,22 @@ function win {
 	echo -e "Vous avez réussi à sortir du labyrinthe vivant...\nOserez-vous retenter l'expérience?"; menu
 }
 
+#Confirmation de sauvegarde avant de quitter
+function quitter {
+	while  read -p "Voulez vous sauvegarder la partie en cours? (o/n)
+	" choice ; do
+        case "$choice" in
+                n|N|q|Q) exit;;
+                o|O) save;;
+                *) echo "Choix non valide..."
+        esac
+	done
+}
 #Sauvegarde
 function save {
-	save="save";
-	read -p "Veuillez indiquer le nom de votre sauvegarde [$save]:
+	read -p "Veuillez indiquer le nom de votre sauvegarde [save]:
 	" save;
+	if [ ! $save ]; then save="save"; fi
 	cd $DEF_PATH
 	tar cvf $save.tar.gz entree/ char.txt 1>/dev/null
 	rm -rf entree "char.txt"
@@ -39,7 +50,7 @@ function load {
 			0|1|2|3|4|5) clear; echo "Chargement en cours...";tar -xvvf ${save[$choice]} 1>/dev/null
 				nb=0; while read ligne ; do perso[$nb]=$ligne; let "nb+=1";
 				done < "$DEF_PATH"/char.txt
-				cd "${perso[5]}"; clear; game;;
+				cd "${perso[5]}"; clear; game "Partie chargée avec succès\n";;
 		        *) echo "Choix non valide..."
 		esac
 	clear; menu

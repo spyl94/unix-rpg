@@ -1,6 +1,5 @@
-function isDead { if [ $pv -le 0 ]; then return true; else return false; fi }
-
 function game {
+	echo -en "\e[1;34m$1\e[0m"
 	nb=0 
 	declare -a perso pieces mobs potions enigmes armes
 
@@ -15,7 +14,7 @@ function game {
 	nomArme=$(cut -d : -f 1 $DEF_PATH"/char.txt" | sed -n '5p')
 	degArme=$(cut -d : -f 3 $DEF_PATH"/char.txt" | sed -n '5p')
 	nb=0
-	echo -e "------------------\n${perso[0]}\nPV Max: $pvMax\nPV Courrant: $pv\nArme:  $nomArme\n------------------\n|Lieu:  $lieu"
+	echo -e "------------------\n|${perso[0]}\n|PV: \e[1;32m$pv/$pvMax\e[0m\n|Arme:  \e[0;34m$nomArme\e[0m\n------------------\n|Lieu:  \e[0;34m$lieu\e[0m"
 	
 	mobsCount=0 #On récupère les monstres
 	if [ -f "${perso[5]}"/mobs.txt ]; then 
@@ -36,7 +35,7 @@ function game {
 	nb=0	#On récupère les pièces disponibles
 	for i in $(ls -F | grep / 2>/dev/null); do pieces[$nb]=$i; let "nb+=1"; done
 
-	echo -e "|Armes: $armesCount\n|Monstres: $mobsCount\n|Potions: $potionsCount\n|Enigmes: $enigmesCount\n------------------";
+	echo -e "|Arme(s): \e[1;33m   $armesCount\e[0m\n|Monstre(s): \e[1;33m$mobsCount\e[0m\n|Potion(s): \e[1;33m $potionsCount\e[0m\n|Enigme(s): \e[1;33m $enigmesCount\e[0m\n------------------";
 	cat description.txt
 	echo "Actions:"; nb=0;
 	if [ ! $mobsCount -eq 0 ]; then for i in "${mobs[@]}"; do echo $nb") Attaquer : $i" | cut -d: -f1,2; let "nb+=1"; done

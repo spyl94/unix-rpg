@@ -14,19 +14,19 @@ function fight {
 	declare -i degMaxMob=$(echo ${mobs[$1]} | cut -d: -f4)
 	echo -e "Vous entrez en phase de combat avec: $nomMob,\n$desMob";
 	while [ "$pvMob" -gt 0 ]; do
-		echo -e "Vos Pv: $pv | $nomMob Pv: $pvMob"
-		if [ $(($RANDOM%2)) -eq 0 ]; then ((pvMob-=$degArme)); echo -e "	\E[1;32mVous infligez $degArme dommages.\E[0m";
+		echo -e "Vos Pv: \e[1;33m$pv\e[0m | $nomMob Pv: \e[1;33m$pvMob\e[0m"
+		if [ $(($RANDOM%2)) -eq 0 ]; then ((pvMob-=$degArme)); echo -e "	\e[1;32mVous infligez \e[1;33m$degArme\e[1;32m dommages.\e[0m";
 		else echo "	Vous ratez votre attaque..."; fi
 		sleep 1;
 		if [ $pvMob -gt 0 ]; then
-			if [ $(($RANDOM%3)) -eq 0 ]; then ((pv-=$degMaxMob)); echo -e "	\E[1;31m$nomMob vous inflige $degMaxMob dommages.\E[0m";
+			if [ $(($RANDOM%3)) -eq 0 ]; then ((pv-=$degMaxMob)); echo -e "	\e[1;31m$nomMob vous inflige \e[1;33m$degMaxMob\e[1;31m dommages.\e[0m";
 			else echo -e "	$nomMob rate son attaque!"; fi
 			sleep 1;
 		fi
 		if [ $pv -le 0 ]; then clear; echo "Vous êtes mort... $nomMob vous a vaincu."; rm -rf $DEF_PATH/char.txt; menu; fi
 	done
 	sed $(($1+1))"d" `pwd`/mobs.txt -i
-	clear; echo "Vous avez vaincu $nomMob !"
+	clear; echo -e "\e[1;34mVous avez vaincu $nomMob !\e[0m"
 }
 
 #Fait résoudre au personnage l'énigme reçue en paramètre
@@ -42,7 +42,7 @@ function resolve {
                 q|Q) exit;;
 		a|A) game;;
 		1|2) let "choice+=2";	if [ $(echo "${enigmes[$1]}" | cut -d: -f$(($choice))) = $(echo "${enigmes[$1]}" | cut -d: -f5) ]; then
-				clear; echo "Félicitations, vous avez réussi l'énigme!"; sed $(($1+1))"d" `pwd`/enigmes.txt -i;
+				sed $(($1+1))"d" `pwd`/enigmes.txt -i; clear; game "Félicitations, vous avez réussi l'énigme!\n";
 			else	
 				clear; echo "Vous avez ratez l'énigme et perdez 3PV."; ((pv-=3));
 				if [ $pv -le 0 ]; then clear; echo "Vous êtes mort... $nomMob vous a vaincu."; rm -rf $DEF_PATH/char.txt; menu; fi
@@ -60,7 +60,7 @@ function secret {
 	echo -e "Osez vous l'emprunter?\nO)Oui\nN)Non"
 	read choice
 	case "$choice" in
-                q|Q) exit;;
+                q|Q) quitter;;
 		o|O) cd $(ls -F | grep @ | cut -d@ -f1);;
 		n|N) break;;
                 *) echo "Choix non valide..."
@@ -79,7 +79,7 @@ function drink {
 	pvSup=$(echo ${potions[$1]} | cut -d: -f3)
 	let "pv+=pvSup"
 	[ $pv -gt $pvMax ] && ((pv=$pvMax));
-	clear; echo "Vous avez utilisé la potion: ${potions[$1]}" | cut -d: -f1,2
+	clear; echo -e "\e[1;34mVous avez utilisé la potion: ${potions[$1]}.\e[0m" | cut -d: -f1,2
 	sed $(($1+1))"d" `pwd`/potions.txt -i
 }
 
@@ -98,7 +98,7 @@ function potion {
 		echo "Q) Quitter"
 		read choice 
 		case "$choice" in
-		        q|Q) exit;;
+		        q|Q) quitter;;
 			a|A) game;;
 			0|1|2|3|4|5) drink $choice;;
 		        *) echo "Choix non valide..."
@@ -131,7 +131,7 @@ function armes {
 		echo "Q) Quitter"
 		read choice 
 		case "$choice" in
-		        q|Q) exit;;
+		        q|Q) quitter;;
 			a|A) game;;
 			0|1|2|3|4|5) switch $choice;;
 		        *) clear; echo "Choix non valide..."
